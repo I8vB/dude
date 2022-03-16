@@ -4,10 +4,12 @@ from game import Game
 
 def AddCoasterToBoard(x, y):
     todo = MyGame.GetCoastersToDo()
-    ##print(x,y, todo)
+
+    # found possible solution
     if len(todo) == 0:
-        MyGame.FoundSolution()
+        AddBoardToSolutions()
         return
+
     newX = 0
     newY = 0
     ## loop thru all coasters to do
@@ -30,12 +32,30 @@ def AddCoasterToBoard(x, y):
     ## pull coaster from board
     del MyGame.Board[x][y]
 
+def AddBoardToSolutions():
+    global dupes
+    if len(solutions) == 0 or IsUniqueSolution():
+        solutions.append([MyGame.ToList(0), 
+            MyGame.ToList(90), 
+            MyGame.ToList(180), 
+            MyGame.ToList(270)])
+    else:
+	    dupes += 1
+
+def IsUniqueSolution():
+    for solution in solutions:
+        if MyGame.ToList(0) in solution:
+            return False
+    return True
 
 ## start
-Coaster.pictureCount = 4
+characterCount = 4
 gameSize = 2
+solutions = []
+dupes = 0
 
-for i in range(1, 5):
+Coaster.pictureCount = characterCount
+for i in range(1, characterCount + 1):
     Coaster.cast.append(i)
     Coaster.cast.append(-i)
 
@@ -45,4 +65,6 @@ MyGame.ToString()
 
 AddCoasterToBoard(0,0)
 
-print ("Solutions Found:", Game.Solutions)
+print ("Duplicates Found:", dupes)
+print ("Solutions Found:", len(solutions))
+print (*solutions, sep="\n")

@@ -1,3 +1,4 @@
+from pickle import TRUE
 from coaster import Coaster
 class Game(object):
 	BoardSize = 0
@@ -47,7 +48,27 @@ class Game(object):
 			for c in r:
 				c.ToString()
 
+	def ToList(self, rotation):
+		retList = []
+		if rotation == 0:
+			for r in self.Board:
+				for c in r:
+					retList.append(c.Name)
+		elif rotation == 90:
+			for c in range(self.BoardSize-1, -1, -1):
+				for r in range(self.BoardSize):
+					retList.append(self.Board[r][c].Name)
+		elif rotation == 180:
+			for r in range(self.BoardSize-1, -1, -1):
+				for c in range(self.BoardSize-1, -1, -1):
+					retList.append(self.Board[r][c].Name)
+		else: #rotation = 270
+			for c in range(self.BoardSize):
+				for r in range(self.BoardSize-1, -1, -1):
+					retList.append(self.Board[r][c].Name)
+		return retList
+
 	def FoundSolution(self):
-		Game.Solutions = Game.Solutions + 1
-		print ("Solution #", Game.Solutions)
-		print (self.ToString())
+		Game.Solutions += 1
+		print ("Solution #", self.Solutions)
+		self.ToString()
