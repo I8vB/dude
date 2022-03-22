@@ -1,8 +1,7 @@
-from pickle import TRUE
 from coaster import Coaster
+
 class Game(object):
 	BoardSize = 0
-	Solutions = 0
 
 	def __init__ (self, boardSize):
 		self.BoardSize = boardSize
@@ -10,6 +9,7 @@ class Game(object):
 		self.Coasters = []
 
 	def SetCoasters(self):
+		self.Coasters.clear()
 		for i in range(self.BoardSize * self.BoardSize):
 			self.Coasters.append(Coaster(i))
 
@@ -44,31 +44,25 @@ class Game(object):
 			self.Board[row][col] = coasterToAdd
 
 	def ToString(self):
-		for r in self.Board:
-			for c in r:
-				c.ToString()
+		for coaster in self.Coasters:
+			print(coaster)
 
 	def ToList(self, rotation):
 		retList = []
 		if rotation == 0:
-			for r in self.Board:
-				for c in r:
-					retList.append(c.Name)
+			for row in self.Board:
+				for coastr in row:
+					retList.append(coastr.Name)
 		elif rotation == 90:
-			for c in range(self.BoardSize-1, -1, -1):
-				for r in range(self.BoardSize):
-					retList.append(self.Board[r][c].Name)
+			for col in range(self.BoardSize-1, -1, -1):
+				for row in range(self.BoardSize):
+					retList.append(self.Board[row][col].Name)
 		elif rotation == 180:
-			for r in range(self.BoardSize-1, -1, -1):
-				for c in range(self.BoardSize-1, -1, -1):
-					retList.append(self.Board[r][c].Name)
+			for row in range(self.BoardSize-1, -1, -1):
+				for col in range(self.BoardSize-1, -1, -1):
+					retList.append(self.Board[row][col].Name)
 		else: #rotation = 270
-			for c in range(self.BoardSize):
-				for r in range(self.BoardSize-1, -1, -1):
-					retList.append(self.Board[r][c].Name)
+			for col in range(self.BoardSize):
+				for row in range(self.BoardSize-1, -1, -1):
+					retList.append(self.Board[row][col].Name)
 		return retList
-
-	def FoundSolution(self):
-		Game.Solutions += 1
-		print ("Solution #", self.Solutions)
-		self.ToString()

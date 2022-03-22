@@ -3,6 +3,14 @@ class Coaster(object):
 	cast = []
 	pictureCount = 0
 
+	@staticmethod
+	def SetCast(characterCount):
+		Coaster.pictureCount = characterCount
+		Coaster.cast.clear()
+		for i in range(1, characterCount + 1):
+			Coaster.cast.append(i)
+			Coaster.cast.append(-i)
+
 	def __init__(self, name):
 		self.Name = name
 		self.Pix = []
@@ -27,5 +35,5 @@ class Coaster(object):
 		ret.Pix = self.Pix.copy()
 		return ret
 
-	def ToString(self):
-		print ("Coaster", self.Name, "Pix", self.Pix)
+	def __str__(self):
+		return f'Coaster: {self.Name}, Pix: {self.Pix}'

@@ -1,4 +1,3 @@
-from modules import *
 from coaster import Coaster
 from game import Game
 
@@ -33,20 +32,16 @@ def AddCoasterToBoard(x, y):
     del MyGame.Board[x][y]
 
 def AddBoardToSolutions():
-    global dupes
-    if len(solutions) == 0 or IsUniqueSolution():
-        solutions.append([MyGame.ToList(0), 
-            MyGame.ToList(90), 
-            MyGame.ToList(180), 
-            MyGame.ToList(270)])
-    else:
-	    dupes += 1
-
-def IsUniqueSolution():
+    global dupes, solutions
     for solution in solutions:
         if MyGame.ToList(0) in solution:
-            return False
-    return True
+            dupes += 1
+            return
+
+    solutions.append([MyGame.ToList(0), 
+        MyGame.ToList(90), 
+        MyGame.ToList(180), 
+        MyGame.ToList(270)])
 
 ## start
 characterCount = 4
@@ -54,13 +49,12 @@ gameSize = 2
 solutions = []
 dupes = 0
 
-Coaster.pictureCount = characterCount
-for i in range(1, characterCount + 1):
-    Coaster.cast.append(i)
-    Coaster.cast.append(-i)
+Coaster.SetCast(characterCount)
+print (f'The Cast: {Coaster.cast}')
 
 MyGame = Game(gameSize)
 MyGame.SetCoasters()
+print ('The Coasters')
 MyGame.ToString()
 
 AddCoasterToBoard(0,0)
