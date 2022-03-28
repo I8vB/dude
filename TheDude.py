@@ -43,19 +43,21 @@ def AddBoardToSolutions():
         MyGame.ToList(180), 
         MyGame.ToList(270)])
 
-## start
-characterCount = 4
-gameSize = 2
-solutions = []
-dupes = 0
+if __name__ == '__main__':
 
-Coaster.SetCast(characterCount)
-print (f'The Cast: {Coaster.cast}')
+    characterCount = int(input("Enter number of cast members (2-5): "))
+    gameSize = int(input("Enter number of coasters per row (2-5): "))
 
-MyGame = Game(gameSize)
-MyGame.SetCoasters()
-print ('The Coasters')
-MyGame.ToString()
+    solutions = []
+    dupes = 0
+
+    Coaster.SetCast(characterCount)
+    print (f'The Cast: {Coaster.cast}')
+
+    MyGame = Game(gameSize)
+    MyGame.SetCoasters()
+    print ('The Coasters')
+    MyGame.ToString()
 
 AddCoasterToBoard(0,0)
 

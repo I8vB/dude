@@ -36,6 +36,31 @@ def AddCoasterToBoard(MyGame, x, y):
     ## pull coaster from board
     del MyGame.Board[x][y]
 
+def ShowSolution(MyGame):
+    solutionWindow = tkinter.Toplevel()
+    solutionWindow.title(str(len(solutions)))
+    solutionWindows.append(solutionWindow)
+
+    for i in range(MyGame.BoardSize):
+        for j in range(MyGame.BoardSize):
+            # get coaster to display
+            coast = MyGame.Board[i][j]
+            # create coaster frame
+            frame = tkinter.LabelFrame(solutionWindow)
+            frame.grid(row=i, column=j, padx=5, pady=5)
+            inFrame = tkinter.Frame(frame)
+            inFrame.grid(row=1, column=0)
+            tag0 = tkinter.Label(inFrame, text=coast.Pix[0])
+            tag0.grid(row=0, columnspan=3, sticky="N")
+            tag1 = tkinter.Label(inFrame, text=coast.Pix[1])
+            tag1.grid(row=1, column=2, padx=5, pady=5, sticky="E")
+            tag2 = tkinter.Label(inFrame, text=coast.Pix[2])
+            tag2.grid(row=2, columnspan=3, sticky="S")
+            tag3 = tkinter.Label(inFrame, text=coast.Pix[3])
+            tag3.grid(row=1, column=0, padx=5, pady=5, sticky="W")
+            tagN = tkinter.Label(inFrame, text=" ")
+            tagN.grid(row=1, column=1, padx=5, pady=5)
+
 def AddBoardToSolutions(MyGame):
     global solutions, dupes
     for solution in solutions:
@@ -48,8 +73,15 @@ def AddBoardToSolutions(MyGame):
         MyGame.ToList(180), 
         MyGame.ToList(270)])
 
+    ShowSolution(MyGame)
+
 def playGame(*args):
     try:
+        root.config(cursor="watch")
+        for solutionWindow in solutionWindows:
+            solutionWindow.destroy()
+        solutionWindows.clear()
+
         characterCount = int(characters.get())
         boardSize = int(boardsize.get())
 
@@ -64,9 +96,12 @@ def playGame(*args):
         solutionCount.set(int(len(solutions)))
         duplicateCount.set(int(dupes))
 
-#        tkinter.messagebox.showinfo("Title", "Message")
     except ValueError:
-        pass
+        tkinter.messagebox.showinfo("exception", "Message")
+
+    finally:
+        root.config(cursor="")
+
 
 class MainGui:
 
@@ -79,24 +114,22 @@ class MainGui:
         root.columnconfigure(0, weight=1)
         root.rowconfigure(0, weight=1)
 
-     #   characters = IntVar()
         character_entry = ttk.Entry(mainframe, width=4, textvariable=characters)
         character_entry.grid(column=2, row=1, sticky=(W, E))
-        ttk.Label(mainframe, text="# of characters").grid(column=1, row=1, sticky=E)
+        Radiobutton(mainframe, text="2", variable=characters, value=2).grid(row=0, column=1)
+        Radiobutton(mainframe, text="3", variable=characters, value=3).grid(row=0, column=2)
+        Radiobutton(mainframe, text="4", variable=characters, value=4).grid(row=0, column=3)
+        ttk.Label(mainframe, text="# of characters").grid(row=0, column=0, sticky=E)
 
-     #   boardsize = IntVar()
-        boardsize_entry = ttk.Entry(mainframe, width=4, textvariable=boardsize)
-        boardsize_entry.grid(column=2, row=2, sticky=(W, E))
-        ttk.Label(mainframe, text="board size (x by x)").grid(column=1, row=2, sticky=E)
-
-#        solutionCount = StringVar()
-        ttk.Label(mainframe, textvariable=solutionCount).grid(column=2, row=3, sticky=(W, E))
-        ttk.Label(mainframe, text="# of solutions").grid(column=1, row=3, sticky=E)
-#        duplicateCount = StringVar()
-        ttk.Label(mainframe, textvariable=duplicateCount).grid(column=2, row=4, sticky=(W, E))
-        ttk.Label(mainframe, text="# of duplicates").grid(column=1, row=4, sticky=E)
-
-        ttk.Button(mainframe, text="Play Game", command=playGame).grid(column=3, row=5, sticky=W)
+        Radiobutton(mainframe, text="2", variable=boardsize, value=2).grid(row=1, column=1)
+        Radiobutton(mainframe, text="3", variable=boardsize, value=3).grid(row=1, column=2)
+        Radiobutton(mainframe, text="4", variable=boardsize, value=4).grid(row=1, column=3)
+        ttk.Label(mainframe, text="board size (x by x)").grid(row=1, column=0, sticky=E)
+        ttk.Label(mainframe, textvariable=solutionCount).grid(row=2, column=1, sticky=(W, E))
+        ttk.Label(mainframe, text="# of solutions").grid(row=2, column=0, sticky=E)
+        ttk.Label(mainframe, textvariable=duplicateCount).grid(row=3, column=1, sticky=(W, E))
+        ttk.Label(mainframe, text="# of duplicates").grid(row=3, column=0, sticky=E)
+        ttk.Button(mainframe, text="Play Game", command=playGame).grid(columnspan=4, row=5)
 
         for child in mainframe.winfo_children(): 
             child.grid_configure(padx=5, pady=5)
@@ -104,16 +137,17 @@ class MainGui:
         character_entry.focus()
         root.bind("<Return>", playGame)
 
-root = Tk()
-
-characters = IntVar()
-boardsize = IntVar()
-solutionCount = StringVar()
-duplicateCount = StringVar()
-solutions = []
-dupes = 0
-MyGame = Game(0)
-
-MainGui(root)
-
-root.mainloop()
+if __name__ == '__main__':
+    root = Tk()
+    characters = IntVar()
+    characters.set(3)
+    boardsize = IntVar()
+    boardsize.set(3)
+    solutionCount = StringVar()
+    duplicateCount = StringVar()
+    solutions = []
+    solutionWindows = []
+    dupes = 0
+    MyGame = Game(0)
+    main = MainGui(root)
+    root.mainloop()

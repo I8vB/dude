@@ -1,4 +1,5 @@
 import random
+
 class Coaster(object):
 	cast = []
 	pictureCount = 0
