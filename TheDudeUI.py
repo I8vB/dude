@@ -68,7 +68,7 @@ def AddBoardToSolutions(MyGame):
             dupes += 1
             return
 
-    solutions.append([MyGame.ToList(0), 
+    solutions.append([MyGame.ToList(), 
         MyGame.ToList(90), 
         MyGame.ToList(180), 
         MyGame.ToList(270)])
@@ -76,6 +76,7 @@ def AddBoardToSolutions(MyGame):
     ShowSolution(MyGame)
 
 def playGame(*args):
+    global dupes
     try:
         root.config(cursor="watch")
         for solutionWindow in solutionWindows:

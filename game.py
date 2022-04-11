@@ -47,7 +47,7 @@ class Game(object):
 		for coaster in self.Coasters:
 			print(coaster)
 
-	def ToList(self, rotation):
+	def ToList(self, rotation=0):
 		retList = []
 		if rotation == 0:
 			for row in self.Board:
